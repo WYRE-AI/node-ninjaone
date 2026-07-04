@@ -1020,11 +1020,13 @@ interface Ticket extends TimestampFields {
  */
 interface TicketListParams {
     /**
-     * Board ID to query. Defaults to 1, which on most tenants is the "All Tickets"
-     * board — but this is not guaranteed. Call `listBoards()` to discover the
-     * board IDs for the current tenant if you need a specific board.
+     * Board ID to query (required). Board IDs are tenant-specific — board 1 is
+     * NOT guaranteed to be the "All Tickets" board, and querying the wrong board
+     * silently returns the wrong tickets. Call `listBoards()` to discover the
+     * board IDs for the current tenant; on tenants where that endpoint returns
+     * 404, read the ID from the board link's URL in the NinjaOne web UI.
      */
-    boardId?: number;
+    boardId: number;
     /** Number of results per page (default: 50) */
     pageSize?: number;
     /** Cursor ID for pagination (0 for first page) */
@@ -1207,11 +1209,11 @@ declare class TicketsResource {
     /**
      * List tickets for a board.
      *
-     * NinjaOne requires querying tickets via a board. The default board ID
-     * is typically 1 (the system "All Tickets" board). You can discover
-     * boards via listBoards().
+     * NinjaOne requires querying tickets via a board, and board IDs are
+     * tenant-specific — board 1 is NOT guaranteed to be the "All Tickets"
+     * board, so no default is applied. Discover board IDs via listBoards().
      */
-    list(params?: TicketListParams): Promise<TicketListResponse>;
+    list(params: TicketListParams): Promise<TicketListResponse>;
     /**
      * Get a single ticket by ID
      */
@@ -1244,7 +1246,12 @@ declare class TicketsResource {
      */
     getAttachments(ticketId: number): Promise<TicketAttachment[]>;
     /**
-     * List available ticket boards
+     * List available ticket boards.
+     *
+     * Note: some tenants return 404 from this endpoint
+     * (GET /api/v2/ticketing/trigger/board), leaving no API path to discover
+     * board IDs — in that case, read the ID from the board link's URL in the
+     * NinjaOne web UI.
      */
     listBoards(): Promise<unknown[]>;
     /**
