@@ -1,3 +1,14 @@
+# [2.0.0](https://github.com/wyre-technology/node-ninjaone/compare/v1.1.3...v2.0.0) (2026-07-04)
+
+
+* fix!: remove silent boardId=1 fallback in tickets.list() ([#49](https://github.com/wyre-technology/node-ninjaone/issues/49)) ([288ed82](https://github.com/wyre-technology/node-ninjaone/commit/288ed823a30e8c2c14f3de7a35066a1ecf3fd242)), closes [wyre-technology/ninjaone-mcp#54](https://github.com/wyre-technology/ninjaone-mcp/issues/54)
+
+
+### BREAKING CHANGES
+
+* TicketsResource.list() requires params.boardId; calls
+without it throw instead of silently defaulting to board 1.
+
 ## [1.1.3](https://github.com/wyre-technology/node-ninjaone/compare/v1.1.2...v1.1.3) (2026-06-08)
 
 
