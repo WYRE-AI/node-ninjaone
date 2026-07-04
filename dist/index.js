@@ -847,12 +847,17 @@ var TicketsResource = class {
   /**
    * List tickets for a board.
    *
-   * NinjaOne requires querying tickets via a board. The default board ID
-   * is typically 1 (the system "All Tickets" board). You can discover
-   * boards via listBoards().
+   * NinjaOne requires querying tickets via a board, and board IDs are
+   * tenant-specific — board 1 is NOT guaranteed to be the "All Tickets"
+   * board, so no default is applied. Discover board IDs via listBoards().
    */
   async list(params) {
-    const boardId = params?.boardId ?? 1;
+    const boardId = params?.boardId;
+    if (typeof boardId !== "number" || !Number.isFinite(boardId)) {
+      throw new Error(
+        `boardId is required: board IDs are tenant-specific and there is no safe default (board 1 is not always the "All Tickets" board). Discover board IDs via listBoards(); if that endpoint returns 404 on your tenant, read the ID from the board link's URL in the NinjaOne web UI.`
+      );
+    }
     const body = {
       sortBy: [],
       filters: [],
@@ -963,7 +968,12 @@ var TicketsResource = class {
     return this.httpClient.request(`/api/v2/ticketing/ticket/${ticketId}/attachment`);
   }
   /**
-   * List available ticket boards
+   * List available ticket boards.
+   *
+   * Note: some tenants return 404 from this endpoint
+   * (GET /api/v2/ticketing/trigger/board), leaving no API path to discover
+   * board IDs — in that case, read the ID from the board link's URL in the
+   * NinjaOne web UI.
    */
   async listBoards() {
     return this.httpClient.request("/api/v2/ticketing/trigger/board");

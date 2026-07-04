@@ -82,11 +82,13 @@ export interface Ticket extends TimestampFields {
  */
 export interface TicketListParams {
   /**
-   * Board ID to query. Defaults to 1, which on most tenants is the "All Tickets"
-   * board — but this is not guaranteed. Call `listBoards()` to discover the
-   * board IDs for the current tenant if you need a specific board.
+   * Board ID to query (required). Board IDs are tenant-specific — board 1 is
+   * NOT guaranteed to be the "All Tickets" board, and querying the wrong board
+   * silently returns the wrong tickets. Call `listBoards()` to discover the
+   * board IDs for the current tenant; on tenants where that endpoint returns
+   * 404, read the ID from the board link's URL in the NinjaOne web UI.
    */
-  boardId?: number;
+  boardId: number;
   /** Number of results per page (default: 50) */
   pageSize?: number;
   /** Cursor ID for pagination (0 for first page) */

@@ -17,11 +17,19 @@ describe('TicketsResource', () => {
   });
 
   describe('list', () => {
-    it('should list tickets', async () => {
-      const result = await client.tickets.list();
+    it('should list tickets for an explicit board', async () => {
+      const result = await client.tickets.list({ boardId: 2 });
 
       expect(result.tickets).toHaveLength(2);
       expect(result.totalCount).toBe(2);
+    });
+
+    it('should reject when boardId is omitted', async () => {
+      // Board IDs are tenant-specific, so list() must not guess a default.
+      // Cast simulates a JS caller bypassing the (now required) type.
+      await expect(
+        client.tickets.list({} as { boardId: number })
+      ).rejects.toThrow(/boardId/);
     });
 
     it('should map status enum to parent statusId in filter body', async () => {
