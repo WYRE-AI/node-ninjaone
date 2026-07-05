@@ -546,19 +546,31 @@ interface Device extends BaseEntity, TimestampFields {
  * Device list parameters
  */
 interface DeviceListParams extends BaseListParams {
-    /** Filter by organization ID */
+    /** Filter by organization ID (compiled into the `df` expression as `org=<id>`) */
     organizationId?: number;
-    /** Filter by device status */
+    /**
+     * Filter by device status. ONLINE/OFFLINE map to the df `online`/`offline`
+     * predicates; APPROVAL_PENDING maps to `status=PENDING`. UNKNOWN has no
+     * server-side equivalent and is rejected.
+     */
     status?: DeviceStatus;
-    /** Filter by node class */
+    /** Filter by node class (compiled into the `df` expression as `class=<NodeClass>`) */
     nodeClass?: DeviceNodeClass;
-    /** Filter by display name (partial match) */
+    /**
+     * Start results after this device id (GET /v2/devices pagination).
+     * Takes precedence over `cursor`, which is accepted as a string alias.
+     */
+    after?: number;
+    /**
+     * @deprecated Not supported by GET /v2/devices (the API has no displayName
+     * filter in its df grammar); never sent. Use devices/search instead.
+     */
     displayName?: string;
-    /** Include system information */
+    /** @deprecated Not supported by GET /v2/devices; never sent. */
     includeSystem?: boolean;
-    /** Include OS information */
+    /** @deprecated Not supported by GET /v2/devices; never sent. */
     includeOS?: boolean;
-    /** Include network interfaces */
+    /** @deprecated Not supported by GET /v2/devices; never sent. */
     includeNetworkInterfaces?: boolean;
 }
 /**
@@ -715,9 +727,22 @@ declare class DevicesResource {
     private readonly httpClient;
     constructor(httpClient: HttpClient);
     /**
-     * List all devices
+     * List all devices.
+     *
+     * Filters are compiled into a `df` device-filter expression — GET
+     * /v2/devices only understands `df`, `pageSize` and `after`; named query
+     * params like `organizationId` are silently ignored by the API (returning
+     * the full unfiltered fleet).
      */
     list(params?: DeviceListParams): Promise<Device[]>;
+    /**
+     * Compile DeviceListParams into the query GET /v2/devices actually accepts.
+     *
+     * df grammar (Ninja RMM Public API v2.0.5 Device Filter Syntax):
+     * `org=<id>`, `class=<NodeClass>`, bare `online` / `offline` predicates,
+     * `status=PENDING|APPROVED` (approval status), combined with ` AND `.
+     */
+    private buildDeviceQuery;
     /**
      * List devices for a specific organization
      */

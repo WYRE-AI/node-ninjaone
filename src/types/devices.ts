@@ -128,19 +128,31 @@ export interface Device extends BaseEntity, TimestampFields {
  * Device list parameters
  */
 export interface DeviceListParams extends BaseListParams {
-  /** Filter by organization ID */
+  /** Filter by organization ID (compiled into the `df` expression as `org=<id>`) */
   organizationId?: number;
-  /** Filter by device status */
+  /**
+   * Filter by device status. ONLINE/OFFLINE map to the df `online`/`offline`
+   * predicates; APPROVAL_PENDING maps to `status=PENDING`. UNKNOWN has no
+   * server-side equivalent and is rejected.
+   */
   status?: DeviceStatus;
-  /** Filter by node class */
+  /** Filter by node class (compiled into the `df` expression as `class=<NodeClass>`) */
   nodeClass?: DeviceNodeClass;
-  /** Filter by display name (partial match) */
+  /**
+   * Start results after this device id (GET /v2/devices pagination).
+   * Takes precedence over `cursor`, which is accepted as a string alias.
+   */
+  after?: number;
+  /**
+   * @deprecated Not supported by GET /v2/devices (the API has no displayName
+   * filter in its df grammar); never sent. Use devices/search instead.
+   */
   displayName?: string;
-  /** Include system information */
+  /** @deprecated Not supported by GET /v2/devices; never sent. */
   includeSystem?: boolean;
-  /** Include OS information */
+  /** @deprecated Not supported by GET /v2/devices; never sent. */
   includeOS?: boolean;
-  /** Include network interfaces */
+  /** @deprecated Not supported by GET /v2/devices; never sent. */
   includeNetworkInterfaces?: boolean;
 }
 
