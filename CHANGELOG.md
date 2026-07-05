@@ -1,3 +1,10 @@
+## [2.0.1](https://github.com/wyre-technology/node-ninjaone/compare/v2.0.0...v2.0.1) (2026-07-05)
+
+
+### Bug Fixes
+
+* **devices:** compile list() filters into df expression ([#50](https://github.com/wyre-technology/node-ninjaone/issues/50)) ([6f2e661](https://github.com/wyre-technology/node-ninjaone/commit/6f2e6616e42ee79f6f439bd79a546cab94b78bbb)), closes [wyre-technology/ninjaone-mcp#56](https://github.com/wyre-technology/ninjaone-mcp/issues/56)
+
 # [2.0.0](https://github.com/wyre-technology/node-ninjaone/compare/v1.1.3...v2.0.0) (2026-07-04)
 
 
