@@ -599,13 +599,63 @@ var DevicesResource = class {
     this.httpClient = httpClient;
   }
   /**
-   * List all devices
+   * List all devices.
+   *
+   * Filters are compiled into a `df` device-filter expression — GET
+   * /v2/devices only understands `df`, `pageSize` and `after`; named query
+   * params like `organizationId` are silently ignored by the API (returning
+   * the full unfiltered fleet).
    */
   async list(params) {
     const response = await this.httpClient.request("/api/v2/devices", {
-      params: this.buildListParams(params)
+      params: this.buildDeviceQuery(params)
     });
     return response;
+  }
+  /**
+   * Compile DeviceListParams into the query GET /v2/devices actually accepts.
+   *
+   * df grammar (Ninja RMM Public API v2.0.5 Device Filter Syntax):
+   * `org=<id>`, `class=<NodeClass>`, bare `online` / `offline` predicates,
+   * `status=PENDING|APPROVED` (approval status), combined with ` AND `.
+   */
+  buildDeviceQuery(params) {
+    if (!params) return {};
+    const query = {};
+    if (params.pageSize !== void 0) query.pageSize = params.pageSize;
+    const after = params.after ?? (params.cursor !== void 0 ? Number(params.cursor) : void 0);
+    if (after !== void 0) {
+      if (!Number.isFinite(after)) {
+        throw new Error(
+          `Device pagination cursor must be a numeric device id ("after"), got: ${String(
+            params.after ?? params.cursor
+          )}`
+        );
+      }
+      query.after = after;
+    }
+    const df = [];
+    if (params.organizationId !== void 0) df.push(`org=${params.organizationId}`);
+    if (params.nodeClass) df.push(`class=${params.nodeClass}`);
+    if (params.status) {
+      switch (params.status) {
+        case "ONLINE":
+          df.push("online");
+          break;
+        case "OFFLINE":
+          df.push("offline");
+          break;
+        case "APPROVAL_PENDING":
+          df.push("status=PENDING");
+          break;
+        default:
+          throw new Error(
+            `Device status filter "${params.status}" has no server-side df equivalent; use ONLINE, OFFLINE, or APPROVAL_PENDING`
+          );
+      }
+    }
+    if (df.length > 0) query.df = df.join(" AND ");
+    return query;
   }
   /**
    * List devices for a specific organization

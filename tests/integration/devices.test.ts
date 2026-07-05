@@ -23,6 +23,70 @@ describe('DevicesResource', () => {
       expect(devices).toHaveLength(2);
       expect(devices[0]?.displayName).toBe('DESKTOP-001');
     });
+
+    it('should translate filters into a df expression', async () => {
+      let capturedUrl: URL | undefined;
+      server.use(
+        http.get('https://app.ninjarmm.com/api/v2/devices', ({ request }) => {
+          capturedUrl = new URL(request.url);
+          return HttpResponse.json(fixtures.devices.list);
+        })
+      );
+
+      await client.devices.list({
+        organizationId: 5,
+        nodeClass: 'WINDOWS_WORKSTATION',
+        status: 'ONLINE',
+        pageSize: 25,
+        after: 100,
+      });
+
+      // GET /v2/devices only understands df/pageSize/after — named params
+      // like organizationId are silently ignored by the API.
+      expect(capturedUrl?.searchParams.get('df')).toBe(
+        'org=5 AND class=WINDOWS_WORKSTATION AND online'
+      );
+      expect(capturedUrl?.searchParams.get('pageSize')).toBe('25');
+      expect(capturedUrl?.searchParams.get('after')).toBe('100');
+      expect(capturedUrl?.searchParams.get('organizationId')).toBeNull();
+      expect(capturedUrl?.searchParams.get('nodeClass')).toBeNull();
+      expect(capturedUrl?.searchParams.get('status')).toBeNull();
+    });
+
+    it('should map OFFLINE status and treat cursor as the after alias', async () => {
+      let capturedUrl: URL | undefined;
+      server.use(
+        http.get('https://app.ninjarmm.com/api/v2/devices', ({ request }) => {
+          capturedUrl = new URL(request.url);
+          return HttpResponse.json(fixtures.devices.list);
+        })
+      );
+
+      await client.devices.list({ status: 'OFFLINE', cursor: '42' });
+
+      expect(capturedUrl?.searchParams.get('df')).toBe('offline');
+      expect(capturedUrl?.searchParams.get('after')).toBe('42');
+    });
+
+    it('should map APPROVAL_PENDING to the status=PENDING filter', async () => {
+      let capturedUrl: URL | undefined;
+      server.use(
+        http.get('https://app.ninjarmm.com/api/v2/devices', ({ request }) => {
+          capturedUrl = new URL(request.url);
+          return HttpResponse.json(fixtures.devices.list);
+        })
+      );
+
+      await client.devices.list({ status: 'APPROVAL_PENDING' });
+
+      expect(capturedUrl?.searchParams.get('df')).toBe('status=PENDING');
+    });
+
+    it('should reject an UNKNOWN status filter instead of silently ignoring it', async () => {
+      await expect(client.devices.list({ status: 'UNKNOWN' })).rejects.toThrow(
+        /UNKNOWN/
+      );
+    });
   });
 
   describe('listByOrganization', () => {
