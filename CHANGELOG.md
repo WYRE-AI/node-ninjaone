@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/wyre-technology/node-ninjaone/compare/v2.0.1...v2.0.2) (2026-08-13)
+
+
+### Bug Fixes
+
+* **deps:** ignore unreachable ip-address advisory in dependabot config ([#66](https://github.com/wyre-technology/node-ninjaone/issues/66)) ([984be29](https://github.com/wyre-technology/node-ninjaone/commit/984be29102dbdb3605f60173fcdf747f6aa9c5e3))
+
 ## [2.0.1](https://github.com/wyre-technology/node-ninjaone/compare/v2.0.0...v2.0.1) (2026-07-05)
 
 
