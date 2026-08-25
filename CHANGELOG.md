@@ -1,3 +1,11 @@
+## [2.0.3](https://github.com/WYRE-AI/node-ninjaone/compare/v2.0.2...v2.0.3) (2026-08-25)
+
+
+### Bug Fixes
+
+* **deps:** ignore undici in dependabot -- nested unreachable copy in npm's bundled tree ([#74](https://github.com/WYRE-AI/node-ninjaone/issues/74)) ([7121815](https://github.com/WYRE-AI/node-ninjaone/commit/712181547bcb22f2e1bb49f8f881333c3646d653))
+* migrate to WYRE-AI org (npm scope, ghcr namespace, registry) ([#76](https://github.com/WYRE-AI/node-ninjaone/issues/76)) ([51e8e19](https://github.com/WYRE-AI/node-ninjaone/commit/51e8e19450f08fe3558eb5a7ebde43850529a0ac))
+
 ## [2.0.2](https://github.com/wyre-technology/node-ninjaone/compare/v2.0.1...v2.0.2) (2026-08-13)
 
 
