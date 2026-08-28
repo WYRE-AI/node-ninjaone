@@ -1,3 +1,10 @@
+## [2.0.4](https://github.com/WYRE-AI/node-ninjaone/compare/v2.0.3...v2.0.4) (2026-08-28)
+
+
+### Bug Fixes
+
+* **http:** stop mapping generic 400s to NinjaOneAuthenticationError ([#77](https://github.com/WYRE-AI/node-ninjaone/issues/77)) ([058b56e](https://github.com/WYRE-AI/node-ninjaone/commit/058b56ef06370a6900e2617c64973d6c7c69d44e)), closes [#51](https://github.com/WYRE-AI/node-ninjaone/issues/51)
+
 ## [2.0.3](https://github.com/WYRE-AI/node-ninjaone/compare/v2.0.2...v2.0.3) (2026-08-25)
 
 
