@@ -69,6 +69,23 @@ export class NinjaOneValidationError extends NinjaOneError {
 }
 
 /**
+ * Bad request error (400, not a recognized validation-error shape)
+ *
+ * A generic 400 — e.g. a filter or parameter the endpoint rejects — is not
+ * an authentication failure. Reserve NinjaOneAuthenticationError for actual
+ * credential problems (401, or the OAuth token exchange rejecting bad
+ * client credentials) so callers can distinguish a bad parameter from a
+ * bad credential instead of both surfacing identically.
+ */
+export class NinjaOneBadRequestError extends NinjaOneError {
+  constructor(message: string, response?: unknown) {
+    super(message, 400, response);
+    this.name = 'NinjaOneBadRequestError';
+    Object.setPrototypeOf(this, NinjaOneBadRequestError.prototype);
+  }
+}
+
+/**
  * Rate limit exceeded error (429)
  */
 export class NinjaOneRateLimitError extends NinjaOneError {
