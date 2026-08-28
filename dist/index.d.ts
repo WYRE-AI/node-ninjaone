@@ -1515,6 +1515,18 @@ declare class NinjaOneValidationError extends NinjaOneError {
     }>, response?: unknown);
 }
 /**
+ * Bad request error (400, not a recognized validation-error shape)
+ *
+ * A generic 400 — e.g. a filter or parameter the endpoint rejects — is not
+ * an authentication failure. Reserve NinjaOneAuthenticationError for actual
+ * credential problems (401, or the OAuth token exchange rejecting bad
+ * client credentials) so callers can distinguish a bad parameter from a
+ * bad credential instead of both surfacing identically.
+ */
+declare class NinjaOneBadRequestError extends NinjaOneError {
+    constructor(message: string, response?: unknown);
+}
+/**
  * Rate limit exceeded error (429)
  */
 declare class NinjaOneRateLimitError extends NinjaOneError {
@@ -1529,4 +1541,4 @@ declare class NinjaOneServerError extends NinjaOneError {
     constructor(message: string, statusCode?: number, response?: unknown);
 }
 
-export { type Alert, type AlertActionResult, type AlertListParams, type AlertListResponse, type AlertSeverity, type AlertSourceType, type AlertStatus, type BaseEntity, type BaseListParams, type CustomField, DEFAULT_RATE_LIMIT_CONFIG, type Device, type DeviceActivity, type DeviceActivityListResponse, type DeviceActivityType, type DeviceDisk, type DeviceInventory, type DeviceLastUser, type DeviceListParams, type DeviceListResponse, type DeviceMemory, type DeviceNetworkInterface, type DeviceNodeClass, type DeviceOS, type DeviceProcessor, type DeviceService, type DeviceSoftware, type DeviceStatus, type DeviceSystem, type DeviceUpdateData, type Location, NinjaOneAuthenticationError, NinjaOneClient, type NinjaOneConfig, NinjaOneError, NinjaOneForbiddenError, NinjaOneNotFoundError, NinjaOneRateLimitError, type NinjaOneRegion, type NinjaOneScope, NinjaOneServerError, NinjaOneValidationError, type Organization, type OrganizationCreateData, type OrganizationDetailed, type OrganizationListParams, type OrganizationListResponse, type OrganizationUpdateData, type PaginatedResponse, REGION_URLS, type RateLimitConfig, type Ticket, type TicketAttachment, type TicketComment, type TicketCommentCreateData, type TicketCreateData, type TicketForm, type TicketFormField, type TicketListParams, type TicketListResponse, type TicketPriority, type TicketStatus, type TicketType, type TicketUpdateData, type TimestampFields, type Webhook, type WebhookActivityType, type WebhookCreateData, type WebhookListResponse, type WebhookPayload, type WebhookUpdateData };
+export { type Alert, type AlertActionResult, type AlertListParams, type AlertListResponse, type AlertSeverity, type AlertSourceType, type AlertStatus, type BaseEntity, type BaseListParams, type CustomField, DEFAULT_RATE_LIMIT_CONFIG, type Device, type DeviceActivity, type DeviceActivityListResponse, type DeviceActivityType, type DeviceDisk, type DeviceInventory, type DeviceLastUser, type DeviceListParams, type DeviceListResponse, type DeviceMemory, type DeviceNetworkInterface, type DeviceNodeClass, type DeviceOS, type DeviceProcessor, type DeviceService, type DeviceSoftware, type DeviceStatus, type DeviceSystem, type DeviceUpdateData, type Location, NinjaOneAuthenticationError, NinjaOneBadRequestError, NinjaOneClient, type NinjaOneConfig, NinjaOneError, NinjaOneForbiddenError, NinjaOneNotFoundError, NinjaOneRateLimitError, type NinjaOneRegion, type NinjaOneScope, NinjaOneServerError, NinjaOneValidationError, type Organization, type OrganizationCreateData, type OrganizationDetailed, type OrganizationListParams, type OrganizationListResponse, type OrganizationUpdateData, type PaginatedResponse, REGION_URLS, type RateLimitConfig, type Ticket, type TicketAttachment, type TicketComment, type TicketCommentCreateData, type TicketCreateData, type TicketForm, type TicketFormField, type TicketListParams, type TicketListResponse, type TicketPriority, type TicketStatus, type TicketType, type TicketUpdateData, type TimestampFields, type Webhook, type WebhookActivityType, type WebhookCreateData, type WebhookListResponse, type WebhookPayload, type WebhookUpdateData };

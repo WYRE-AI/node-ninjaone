@@ -86,6 +86,13 @@ var NinjaOneValidationError = class _NinjaOneValidationError extends NinjaOneErr
     Object.setPrototypeOf(this, _NinjaOneValidationError.prototype);
   }
 };
+var NinjaOneBadRequestError = class _NinjaOneBadRequestError extends NinjaOneError {
+  constructor(message, response) {
+    super(message, 400, response);
+    this.name = "NinjaOneBadRequestError";
+    Object.setPrototypeOf(this, _NinjaOneBadRequestError.prototype);
+  }
+};
 var NinjaOneRateLimitError = class _NinjaOneRateLimitError extends NinjaOneError {
   /** Suggested retry delay in milliseconds */
   retryAfter;
@@ -306,9 +313,8 @@ var HttpClient = class {
           const errors = this.parseValidationErrors(responseBody);
           throw new NinjaOneValidationError("Validation error", errors, responseBody);
         }
-        throw new NinjaOneAuthenticationError(
-          "Bad request - invalid credentials or parameters",
-          400,
+        throw new NinjaOneBadRequestError(
+          "Bad request - the API rejected the request parameters",
           responseBody
         );
       case 401:
@@ -1147,6 +1153,6 @@ var NinjaOneClient = class {
   }
 };
 
-export { DEFAULT_RATE_LIMIT_CONFIG, NinjaOneAuthenticationError, NinjaOneClient, NinjaOneError, NinjaOneForbiddenError, NinjaOneNotFoundError, NinjaOneRateLimitError, NinjaOneServerError, NinjaOneValidationError, REGION_URLS };
+export { DEFAULT_RATE_LIMIT_CONFIG, NinjaOneAuthenticationError, NinjaOneBadRequestError, NinjaOneClient, NinjaOneError, NinjaOneForbiddenError, NinjaOneNotFoundError, NinjaOneRateLimitError, NinjaOneServerError, NinjaOneValidationError, REGION_URLS };
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

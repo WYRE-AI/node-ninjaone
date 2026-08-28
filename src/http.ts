@@ -8,6 +8,7 @@ import type { RateLimiter } from './rate-limiter.js';
 import {
   NinjaOneError,
   NinjaOneAuthenticationError,
+  NinjaOneBadRequestError,
   NinjaOneForbiddenError,
   NinjaOneNotFoundError,
   NinjaOneValidationError,
@@ -160,14 +161,16 @@ export class HttpClient {
 
     switch (response.status) {
       case 400:
-        // Could be bad credentials on token request or validation error
+        // Validation-error-shaped body (field-level errors)
         if (this.isValidationError(responseBody)) {
           const errors = this.parseValidationErrors(responseBody);
           throw new NinjaOneValidationError('Validation error', errors, responseBody);
         }
-        throw new NinjaOneAuthenticationError(
-          'Bad request - invalid credentials or parameters',
-          400,
+        // Any other 400 is a rejected request (e.g. a bad filter or
+        // parameter), not an authentication failure — don't misreport it
+        // as one. Reserve NinjaOneAuthenticationError for 401s.
+        throw new NinjaOneBadRequestError(
+          'Bad request - the API rejected the request parameters',
           responseBody
         );
 

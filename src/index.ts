@@ -14,6 +14,7 @@ export { DEFAULT_RATE_LIMIT_CONFIG, REGION_URLS } from './config.js';
 export {
   NinjaOneError,
   NinjaOneAuthenticationError,
+  NinjaOneBadRequestError,
   NinjaOneForbiddenError,
   NinjaOneNotFoundError,
   NinjaOneValidationError,

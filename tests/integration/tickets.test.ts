@@ -5,7 +5,7 @@
 import { describe, it, expect } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { NinjaOneClient } from '../../src/client.js';
-import { NinjaOneNotFoundError } from '../../src/errors.js';
+import { NinjaOneBadRequestError, NinjaOneNotFoundError } from '../../src/errors.js';
 import { server } from '../mocks/server.js';
 import * as ticketFixtures from '../fixtures/tickets.js';
 
@@ -68,6 +68,21 @@ describe('TicketsResource', () => {
       expect(capturedBody?.filters).toEqual([
         { field: 'clientId', operator: 'is', value: 42 },
       ]);
+    });
+
+    it('should throw NinjaOneBadRequestError (not an auth error) when the API rejects a filter with a plain 400', async () => {
+      // A rejected filter/parameter is a bad request, not a credential
+      // failure — a generic 400 must not surface as NinjaOneAuthenticationError.
+      server.use(
+        http.post(
+          'https://app.ninjarmm.com/api/v2/ticketing/trigger/board/:boardId/run',
+          () => HttpResponse.json({ error: 'invalid_filter' }, { status: 400 })
+        )
+      );
+
+      await expect(client.tickets.list({ boardId: 2, organizationId: 42 })).rejects.toThrow(
+        NinjaOneBadRequestError
+      );
     });
 
     it('should forward lastCursorId for pagination', async () => {
