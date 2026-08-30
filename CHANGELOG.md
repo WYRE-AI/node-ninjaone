@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/WYRE-AI/node-ninjaone/compare/v2.0.4...v2.1.0) (2026-08-30)
+
+
+### Features
+
+* add organization custom fields support ([#78](https://github.com/WYRE-AI/node-ninjaone/issues/78)) ([0935828](https://github.com/WYRE-AI/node-ninjaone/commit/09358281db95c96ea1fbf19e9b46a620ff189390))
+
 ## [2.0.4](https://github.com/WYRE-AI/node-ninjaone/compare/v2.0.3...v2.0.4) (2026-08-28)
 
 
