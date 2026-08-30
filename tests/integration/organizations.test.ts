@@ -74,4 +74,24 @@ describe('OrganizationsResource', () => {
       await expect(client.organizations.delete(1)).resolves.toBeUndefined();
     });
   });
+
+  describe('getCustomFields', () => {
+    it('should get organization custom fields', async () => {
+      const fields = await client.organizations.getCustomFields(1);
+
+      expect(fields).toEqual({
+        accountManager: 'Jane Smith',
+        contractType: 'Managed Services',
+        renewalDate: '2027-01-15',
+      });
+    });
+  });
+
+  describe('updateCustomFields', () => {
+    it('should update organization custom fields', async () => {
+      await expect(
+        client.organizations.updateCustomFields(1, { accountManager: 'John Doe' }),
+      ).resolves.toBeUndefined();
+    });
+  });
 });

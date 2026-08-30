@@ -75,6 +75,23 @@ export class OrganizationsResource {
   }
 
   /**
+   * Get organization custom fields
+   */
+  async getCustomFields(id: number): Promise<Record<string, unknown>> {
+    return this.httpClient.request<Record<string, unknown>>(`/api/v2/organization/${id}/custom-fields`);
+  }
+
+  /**
+   * Update organization custom fields
+   */
+  async updateCustomFields(id: number, fields: Record<string, unknown>): Promise<void> {
+    await this.httpClient.request<void>(`/api/v2/organization/${id}/custom-fields`, {
+      method: 'PATCH',
+      body: fields,
+    });
+  }
+
+  /**
    * Get organization locations
    */
   async getLocations(id: number): Promise<{ locations: Array<{ id: number; name: string }> }> {
