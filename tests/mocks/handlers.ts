@@ -55,6 +55,14 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
+  http.get(`${BASE_URL}/api/v2/organization/:id/custom-fields`, () => {
+    return HttpResponse.json(fixtures.organizations.customFields);
+  }),
+
+  http.patch(`${BASE_URL}/api/v2/organization/:id/custom-fields`, () => {
+    return new HttpResponse(null, { status: 204 });
+  }),
+
   // Devices endpoints
   http.get(`${BASE_URL}/api/v2/devices`, () => {
     return HttpResponse.json(fixtures.devices.list);
@@ -101,6 +109,14 @@ export const handlers = [
 
   http.get(`${BASE_URL}/api/v2/device/:id/inventory`, () => {
     return HttpResponse.json(fixtures.devices.inventory);
+  }),
+
+  http.get(`${BASE_URL}/api/v2/device/:id/custom-fields`, () => {
+    return HttpResponse.json(fixtures.devices.customFields);
+  }),
+
+  http.patch(`${BASE_URL}/api/v2/device/:id/custom-fields`, () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // Alerts endpoints

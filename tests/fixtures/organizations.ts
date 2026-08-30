@@ -63,3 +63,9 @@ export const updated: Organization = {
   name: 'Updated Acme Corp',
   updateTime: Date.now(),
 };
+
+export const customFields: Record<string, unknown> = {
+  accountManager: 'Jane Smith',
+  contractType: 'Managed Services',
+  renewalDate: '2027-01-15',
+};

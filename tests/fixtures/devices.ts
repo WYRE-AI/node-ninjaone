@@ -144,3 +144,9 @@ export const inventory: DeviceInventory = {
     },
   ],
 };
+
+export const customFields: Record<string, unknown> = {
+  assetTag: 'AT-4821',
+  warrantyExpiration: '2027-06-30',
+  criticalAsset: true,
+};

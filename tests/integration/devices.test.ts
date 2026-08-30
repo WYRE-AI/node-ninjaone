@@ -169,6 +169,26 @@ describe('DevicesResource', () => {
     });
   });
 
+  describe('getCustomFields', () => {
+    it('should get device custom fields', async () => {
+      const fields = await client.devices.getCustomFields(101);
+
+      expect(fields).toEqual({
+        assetTag: 'AT-4821',
+        warrantyExpiration: '2027-06-30',
+        criticalAsset: true,
+      });
+    });
+  });
+
+  describe('updateCustomFields', () => {
+    it('should update device custom fields', async () => {
+      await expect(
+        client.devices.updateCustomFields(101, { assetTag: 'AT-9999' }),
+      ).resolves.toBeUndefined();
+    });
+  });
+
   describe('response parsing robustness', () => {
     it('should parse JSON response even without application/json content-type', async () => {
       // Simulate an API returning JSON data with a non-standard content-type.
