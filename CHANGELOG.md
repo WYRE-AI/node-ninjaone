@@ -1,3 +1,11 @@
+## [2.1.1](https://github.com/WYRE-AI/node-ninjaone/compare/v2.1.0...v2.1.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* **security:** resolve dependabot alerts via npm audit fix ([#81](https://github.com/WYRE-AI/node-ninjaone/issues/81)) ([b55ab88](https://github.com/WYRE-AI/node-ninjaone/commit/b55ab880e7825c02964d697e2cb459d3775bb2a8))
+
+
 # [2.1.0](https://github.com/WYRE-AI/node-ninjaone/compare/v2.0.4...v2.1.0) (2026-08-30)
 
 
