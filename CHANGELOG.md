@@ -1,3 +1,11 @@
+# [2.2.0](https://github.com/WYRE-AI/node-ninjaone/compare/v2.1.1...v2.2.0) (2026-09-04)
+
+
+### Features
+
+* **release:** use extracted CHANGELOG notes instead of --generate-notes ([#85](https://github.com/WYRE-AI/node-ninjaone/issues/85)) ([708cca4](https://github.com/WYRE-AI/node-ninjaone/commit/708cca417ac03c0aed1c18c5742e7353729219e5)), closes [node-datto-rmm#77](https://github.com/node-datto-rmm/issues/77)
+
+
 ## [2.1.1](https://github.com/WYRE-AI/node-ninjaone/compare/v2.1.0...v2.1.1) (2026-09-04)
 
 
