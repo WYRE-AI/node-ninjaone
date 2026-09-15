@@ -1,3 +1,11 @@
+## [2.2.1](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.0...v2.2.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* **deps:** resolve js-yaml CVE-2026-84375 ([#90](https://github.com/WYRE-AI/node-ninjaone/issues/90)) ([a6d9584](https://github.com/WYRE-AI/node-ninjaone/commit/a6d95844441abf189409b88a89e99bb59537faaf))
+
+
 # [2.2.0](https://github.com/WYRE-AI/node-ninjaone/compare/v2.1.1...v2.2.0) (2026-09-04)
 
 
