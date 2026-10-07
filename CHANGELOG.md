@@ -1,3 +1,11 @@
+## [2.2.2](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.1...v2.2.2) (2026-10-07)
+
+
+### Bug Fixes
+
+* **tickets:** call GET /ticketing/trigger/boards from listBoards ([#96](https://github.com/WYRE-AI/node-ninjaone/issues/96)) ([a74ea22](https://github.com/WYRE-AI/node-ninjaone/commit/a74ea226618306f37734434e68290afddd589e19)), closes [#92](https://github.com/WYRE-AI/node-ninjaone/issues/92)
+
+
 ## [2.2.1](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.0...v2.2.1) (2026-09-15)
 
 
