@@ -183,8 +183,8 @@ export const handlers = [
     return HttpResponse.json(fixtures.tickets.commentCreated);
   }),
 
-  http.get(`${BASE_URL}/api/v2/ticketing/trigger/board`, () => {
-    return HttpResponse.json([{ id: 1, name: 'All Tickets' }]);
+  http.get(`${BASE_URL}/api/v2/ticketing/trigger/boards`, () => {
+    return HttpResponse.json(fixtures.tickets.boards);
   }),
 
   http.get(`${BASE_URL}/api/v2/ticketing/ticket-form`, () => {

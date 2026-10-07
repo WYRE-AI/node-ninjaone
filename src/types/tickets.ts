@@ -85,8 +85,7 @@ export interface TicketListParams {
    * Board ID to query (required). Board IDs are tenant-specific — board 1 is
    * NOT guaranteed to be the "All Tickets" board, and querying the wrong board
    * silently returns the wrong tickets. Call `listBoards()` to discover the
-   * board IDs for the current tenant; on tenants where that endpoint returns
-   * 404, read the ID from the board link's URL in the NinjaOne web UI.
+   * board IDs for the current tenant.
    */
   boardId: number;
   /** Number of results per page (default: 50) */
@@ -224,6 +223,66 @@ export interface TicketAttachment {
   size?: number;
   /** Upload timestamp */
   uploadTime?: number;
+}
+
+/**
+ * A single condition inside a ticket board's `any` or `all` group.
+ *
+ * Shape from NinjaOne Public API v2 `getBoards`.
+ */
+export interface TicketBoardCondition {
+  /** Ticket field the condition applies to */
+  field?: string;
+  /** Comparison operator */
+  operator?: string;
+  /** Comparison value */
+  value?: string;
+  /** Extra operator parameters */
+  params?: TicketBoardConditionParams;
+}
+
+/**
+ * Extra parameters on a ticket board condition
+ */
+export interface TicketBoardConditionParams {
+  /** Whether the condition repeats */
+  repeat?: boolean;
+  /** Parameter value */
+  value?: string;
+}
+
+/**
+ * Board filter conditions (`any` matches one; `all` matches every condition)
+ */
+export interface TicketBoardConditions {
+  /** Conditions combined with OR */
+  any?: TicketBoardCondition[];
+  /** Conditions combined with AND */
+  all?: TicketBoardCondition[];
+}
+
+/**
+ * Ticket board returned by GET /api/v2/ticketing/trigger/boards.
+ */
+export interface TicketBoard extends TimestampFields {
+  /** Board ID (tenant-specific; pass to `tickets.list`) */
+  id: number;
+  /** Board UID */
+  uid?: string;
+  /** Board name */
+  name: string;
+  /** Board description */
+  description?: string;
+  /** Filter conditions that define the board */
+  conditions?: TicketBoardConditions;
+  /** Whether this is a system board */
+  system?: boolean;
+  /** Column identifiers shown on the board */
+  columns?: string[];
+  /** Sort configuration */
+  sortBy?: Array<Record<string, Record<string, unknown>>>;
+  /** Number of tickets currently on the board */
+  ticketCount?: number;
 }
 
 /**

@@ -2,7 +2,13 @@
  * Ticket fixtures
  */
 
-import type { Ticket, TicketListResponse, TicketComment, TicketForm } from '../../src/types/tickets.js';
+import type {
+  Ticket,
+  TicketListResponse,
+  TicketComment,
+  TicketBoard,
+  TicketForm,
+} from '../../src/types/tickets.js';
 
 export const list: TicketListResponse = {
   tickets: [
@@ -77,6 +83,34 @@ export const commentCreated: TicketComment = {
   internal: false,
   createTime: Date.now(),
 };
+
+export const boards: TicketBoard[] = [
+  {
+    id: 1,
+    uid: '11111111-1111-1111-1111-111111111111',
+    name: 'All Tickets',
+    description: 'All tickets',
+    system: true,
+    columns: ['id', 'subject', 'status'],
+    ticketCount: 2,
+    createTime: 1704067200000,
+    updateTime: 1704153600000,
+  },
+  {
+    id: 2,
+    uid: '22222222-2222-2222-2222-222222222222',
+    name: 'Open Tickets',
+    description: 'Open tickets only',
+    system: false,
+    columns: ['id', 'subject'],
+    ticketCount: 1,
+    conditions: {
+      all: [{ field: 'status', operator: 'is', value: '2000' }],
+    },
+    createTime: 1704067200000,
+    updateTime: 1704153600000,
+  },
+];
 
 export const forms: TicketForm[] = [
   {
