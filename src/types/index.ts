@@ -69,6 +69,10 @@ export type {
   TicketComment,
   TicketCommentCreateData,
   TicketAttachment,
+  TicketBoard,
+  TicketBoardCondition,
+  TicketBoardConditionParams,
+  TicketBoardConditions,
   TicketForm,
   TicketFormField,
 } from './tickets.js';

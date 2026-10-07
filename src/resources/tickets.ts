@@ -16,6 +16,7 @@ import type {
   TicketComment,
   TicketCommentCreateData,
   TicketAttachment,
+  TicketBoard,
   TicketForm,
 } from '../types/tickets.js';
 
@@ -41,9 +42,7 @@ export class TicketsResource {
     if (typeof boardId !== 'number' || !Number.isFinite(boardId)) {
       throw new Error(
         'boardId is required: board IDs are tenant-specific and there is no safe default ' +
-          '(board 1 is not always the "All Tickets" board). Discover board IDs via ' +
-          'listBoards(); if that endpoint returns 404 on your tenant, read the ID from ' +
-          "the board link's URL in the NinjaOne web UI."
+          '(board 1 is not always the "All Tickets" board). Discover board IDs via listBoards().'
       );
     }
     const body: Record<string, unknown> = {
@@ -180,13 +179,13 @@ export class TicketsResource {
   /**
    * List available ticket boards.
    *
-   * Note: some tenants return 404 from this endpoint
-   * (GET /api/v2/ticketing/trigger/board), leaving no API path to discover
-   * board IDs — in that case, read the ID from the board link's URL in the
-   * NinjaOne web UI.
+   * NinjaOne Public API v2 documents this as GET /v2/ticketing/trigger/boards
+   * (`getBoards`). The singular `/trigger/board` path is only used by
+   * POST /v2/ticketing/trigger/board/{boardId}/run. Board IDs are
+   * tenant-specific; pass a returned `id` to `list()`.
    */
-  async listBoards(): Promise<unknown[]> {
-    return this.httpClient.request<unknown[]>('/api/v2/ticketing/trigger/board');
+  async listBoards(): Promise<TicketBoard[]> {
+    return this.httpClient.request<TicketBoard[]>('/api/v2/ticketing/trigger/boards');
   }
 
   /**

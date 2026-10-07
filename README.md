@@ -253,6 +253,9 @@ const comment = await client.tickets.addComment(789, {
   internal: false,
 });
 
+// List ticket boards (GET /api/v2/ticketing/trigger/boards)
+const boards = await client.tickets.listBoards();
+
 // List ticket forms
 const forms = await client.tickets.listForms();
 ```

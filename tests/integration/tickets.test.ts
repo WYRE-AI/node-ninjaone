@@ -167,6 +167,25 @@ describe('TicketsResource', () => {
     });
   });
 
+  describe('listBoards', () => {
+    it('should list boards from GET /ticketing/trigger/boards', async () => {
+      let requestedUrl = '';
+      server.use(
+        http.get('https://app.ninjarmm.com/api/v2/ticketing/trigger/boards', ({ request }) => {
+          requestedUrl = request.url;
+          return HttpResponse.json(ticketFixtures.boards);
+        })
+      );
+
+      const boards = await client.tickets.listBoards();
+
+      expect(requestedUrl).toBe('https://app.ninjarmm.com/api/v2/ticketing/trigger/boards');
+      expect(boards).toEqual(ticketFixtures.boards);
+      expect(boards[0]?.id).toBe(1);
+      expect(boards[0]?.name).toBe('All Tickets');
+    });
+  });
+
   describe('listForms', () => {
     it('should list ticket forms', async () => {
       const forms = await client.tickets.listForms();
