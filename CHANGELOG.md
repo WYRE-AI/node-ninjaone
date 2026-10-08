@@ -1,3 +1,11 @@
+## [2.2.3](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.2...v2.2.3) (2026-10-08)
+
+
+### Bug Fixes
+
+* **deps:** regenerate package-lock.json to resolve npm ci EUSAGE ([#100](https://github.com/WYRE-AI/node-ninjaone/issues/100)) ([ff9940f](https://github.com/WYRE-AI/node-ninjaone/commit/ff9940fd14edda2b80952e22b271dcea612b84f3)), closes [#97](https://github.com/WYRE-AI/node-ninjaone/issues/97)
+
+
 ## [2.2.2](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.1...v2.2.2) (2026-10-07)
 
 
