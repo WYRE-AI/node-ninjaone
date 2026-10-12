@@ -99,6 +99,14 @@ export const handlers = [
     return HttpResponse.json(fixtures.devices.activities);
   }),
 
+  http.get(`${BASE_URL}/api/v2/device/:id/scripting/options`, () => {
+    return HttpResponse.json(fixtures.scripting.options);
+  }),
+
+  http.post(`${BASE_URL}/api/v2/device/:id/script/run`, () => {
+    return new HttpResponse(null, { status: 204 });
+  }),
+
   http.get(`${BASE_URL}/api/v2/device/:id/windows-services`, () => {
     return HttpResponse.json(fixtures.devices.services);
   }),
