@@ -12,6 +12,7 @@ import { DevicesResource } from './resources/devices.js';
 import { AlertsResource } from './resources/alerts.js';
 import { TicketsResource } from './resources/tickets.js';
 import { WebhooksResource } from './resources/webhooks.js';
+import { ScriptsResource } from './resources/scripts.js';
 
 /**
  * NinjaOne API Client
@@ -57,6 +58,8 @@ export class NinjaOneClient {
   readonly tickets: TicketsResource;
   /** Webhook operations */
   readonly webhooks: WebhooksResource;
+  /** Scripting operations -- run() requires the "control" OAuth scope */
+  readonly scripts: ScriptsResource;
 
   constructor(config: NinjaOneConfig) {
     this.config = resolveConfig(config);
@@ -70,6 +73,7 @@ export class NinjaOneClient {
     this.alerts = new AlertsResource(this.httpClient);
     this.tickets = new TicketsResource(this.httpClient);
     this.webhooks = new WebhooksResource(this.httpClient);
+    this.scripts = new ScriptsResource(this.httpClient);
   }
 
   /**
