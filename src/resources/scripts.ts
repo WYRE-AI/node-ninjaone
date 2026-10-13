@@ -45,11 +45,17 @@ export class ScriptsResource {
    * + "control" scopes. The API returns 204 with no body -- poll
    * devices.getActivities(deviceId) for the run's result, there is no
    * separate run-status endpoint.
+   *
+   * `idempotent: false` -- a 5xx here does not prove NinjaOne never
+   * queued the run; HttpClient's default retry-on-5xx would otherwise
+   * replay this POST and risk executing the script/action twice on a
+   * live customer device.
    */
   async run(deviceId: number, data: RunScriptRequest): Promise<void> {
     await this.httpClient.request<void>(`/api/v2/device/${deviceId}/script/run`, {
       method: 'POST',
       body: data,
+      idempotent: false,
     });
   }
 }
