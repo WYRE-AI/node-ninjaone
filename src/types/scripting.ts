@@ -81,9 +81,11 @@ export interface ScriptingOptionsParams {
  * Request body of POST /api/v2/device/{id}/script/run.
  *
  * Exactly one of `id` (SCRIPT) or `uid` (ACTION) is required, matching
- * `type`. The API does not reject a mismatched pair itself -- validate
- * before sending so a bad id/uid pairing fails here, not against a live
- * customer endpoint.
+ * `type`. Neither this type nor `run()` validates that pairing -- `data`
+ * is forwarded to the API as-is, and a mismatch surfaces as a 400 from
+ * NinjaOne's live endpoint rather than failing locally. Callers that need
+ * to fail closed before reaching the API (e.g. ninjaone-mcp's
+ * `scripts_run` tool) must validate the pairing themselves first.
  */
 export interface RunScriptRequest {
   type: ScriptEntryType;
