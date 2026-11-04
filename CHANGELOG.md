@@ -34,6 +34,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * **scripts:** add scripting resource (list options, run script/action) ([#104](https://github.com/WYRE-AI/node-ninjaone/issues/104)) ([82cda4e](https://github.com/WYRE-AI/node-ninjaone/commit/82cda4ec4a31c8b7650f7cb233766cdcdf2467c5))
 
+## [2.3.1](https://github.com/WYRE-AI/node-ninjaone/compare/v2.3.0...v2.3.1) (2026-11-04)
+
+
+### Bug Fixes
+
+* **release:** add changelogTitle config to prevent changelog header orphaning ([#103](https://github.com/WYRE-AI/node-ninjaone/issues/103)) ([359c0e9](https://github.com/WYRE-AI/node-ninjaone/commit/359c0e9e2e3fd51478f018b5cd338c1bf844c44c))
+
 
 ## [2.2.3](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.2...v2.2.3) (2026-10-08)
 
