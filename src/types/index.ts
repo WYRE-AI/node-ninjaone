@@ -86,3 +86,15 @@ export type {
   WebhookActivityType,
   WebhookPayload,
 } from './webhooks.js';
+
+// Scripting types
+export type {
+  ScriptEntryType,
+  ScriptCredentialType,
+  ScriptCategory,
+  ScriptOption,
+  ScriptCredential,
+  DeviceScriptingOptions,
+  ScriptingOptionsParams,
+  RunScriptRequest,
+} from './scripting.js';

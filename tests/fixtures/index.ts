@@ -8,3 +8,4 @@ export * as devices from './devices.js';
 export * as alerts from './alerts.js';
 export * as tickets from './tickets.js';
 export * as webhooks from './webhooks.js';
+export * as scripting from './scripting.js';

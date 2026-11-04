@@ -22,6 +22,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive error classes for different error conditions
 - Full test suite with unit and integration tests using Vitest and MSW
 
+# [2.3.0](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.3...v2.3.0) (2026-10-13)
+
+
+### Bug Fixes
+
+* **dependabot:** ungroup msw/vitest majors from auto-merged dev-dependencies ([#105](https://github.com/WYRE-AI/node-ninjaone/issues/105)) ([248e6a1](https://github.com/WYRE-AI/node-ninjaone/commit/248e6a1db3b1714924be14d4f41b0c42d554daeb))
+
+
+### Features
+
+* **scripts:** add scripting resource (list options, run script/action) ([#104](https://github.com/WYRE-AI/node-ninjaone/issues/104)) ([82cda4e](https://github.com/WYRE-AI/node-ninjaone/commit/82cda4ec4a31c8b7650f7cb233766cdcdf2467c5))
+
+
 ## [2.2.3](https://github.com/WYRE-AI/node-ninjaone/compare/v2.2.2...v2.2.3) (2026-10-08)
 
 

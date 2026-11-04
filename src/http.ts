@@ -28,6 +28,15 @@ export interface RequestOptions {
   params?: Record<string, string | number | boolean | undefined>;
   /** Skip authentication (for token endpoint) */
   skipAuth?: boolean;
+  /**
+   * Whether this request is safe to replay automatically on a 5xx
+   * response. Defaults to `true` to preserve existing retry behavior for
+   * every other call site. Set to `false` for a write whose side effect
+   * is not safely repeatable (e.g. triggering script/action execution on
+   * a device) -- a 5xx can mean the API queued the action before the
+   * response itself failed, and retrying would replay it.
+   */
+  idempotent?: boolean;
 }
 
 /**
@@ -48,7 +57,7 @@ export class HttpClient {
    * Make an authenticated request to the API
    */
   async request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-    const { method = 'GET', body, params, skipAuth = false } = options;
+    const { method = 'GET', body, params, skipAuth = false, idempotent = true } = options;
 
     // Build the URL
     let url = `${this.config.baseUrl}${path}`;
@@ -65,7 +74,7 @@ export class HttpClient {
       }
     }
 
-    return this.executeRequest<T>(url, method, body, skipAuth);
+    return this.executeRequest<T>(url, method, body, skipAuth, 0, false, idempotent);
   }
 
   /**
@@ -84,7 +93,8 @@ export class HttpClient {
     body: unknown,
     skipAuth: boolean,
     retryCount: number = 0,
-    isRetryAfter401: boolean = false
+    isRetryAfter401: boolean = false,
+    idempotent: boolean = true
   ): Promise<T> {
     // Wait for a rate limit slot
     await this.rateLimiter.waitForSlot();
@@ -111,7 +121,16 @@ export class HttpClient {
     });
 
     // Handle the response
-    return this.handleResponse<T>(response, url, method, body, skipAuth, retryCount, isRetryAfter401);
+    return this.handleResponse<T>(
+      response,
+      url,
+      method,
+      body,
+      skipAuth,
+      retryCount,
+      isRetryAfter401,
+      idempotent
+    );
   }
 
   /**
@@ -124,7 +143,8 @@ export class HttpClient {
     body: unknown,
     skipAuth: boolean,
     retryCount: number,
-    isRetryAfter401: boolean
+    isRetryAfter401: boolean,
+    idempotent: boolean = true
   ): Promise<T> {
     if (response.ok) {
       // Handle empty responses (204 No Content)
@@ -183,9 +203,11 @@ export class HttpClient {
             responseBody
           );
         }
-        // Try to refresh the token and retry once
+        // Try to refresh the token and retry once. Safe regardless of
+        // idempotent: a 401 means the server rejected the request before
+        // acting on it, not that it was queued.
         await this.authManager.refreshToken();
-        return this.executeRequest<T>(url, method, body, skipAuth, retryCount, true);
+        return this.executeRequest<T>(url, method, body, skipAuth, retryCount, true, idempotent);
 
       case 403:
         throw new NinjaOneForbiddenError('Access forbidden - insufficient permissions', responseBody);
@@ -194,13 +216,23 @@ export class HttpClient {
         throw new NinjaOneNotFoundError('Resource not found', responseBody);
 
       case 429:
-        // Rate limited - retry with backoff
+        // Rate limited - retry with backoff. Safe regardless of
+        // idempotent: a 429 means the request was rejected before being
+        // processed, not that it was queued.
         if (this.rateLimiter.shouldRetry(retryCount)) {
           const retryAfterHeader = response.headers.get('Retry-After');
           const delay = this.rateLimiter.parseRetryAfter(retryAfterHeader);
           this.rateLimiter.handleRateLimitError(retryCount);
           await this.sleep(delay);
-          return this.executeRequest<T>(url, method, body, skipAuth, retryCount + 1, isRetryAfter401);
+          return this.executeRequest<T>(
+            url,
+            method,
+            body,
+            skipAuth,
+            retryCount + 1,
+            isRetryAfter401,
+            idempotent
+          );
         }
         throw new NinjaOneRateLimitError(
           'Rate limit exceeded and max retries reached',
@@ -210,10 +242,14 @@ export class HttpClient {
 
       default:
         if (response.status >= 500) {
-          // Server error - retry once
-          if (retryCount === 0) {
+          // Server error - retry once, but only for idempotent requests.
+          // A 5xx does not prove the server never acted on the request --
+          // for a write whose side effect isn't safely repeatable (e.g.
+          // triggering script execution on a device), replaying it on a
+          // 5xx can execute it twice.
+          if (retryCount === 0 && idempotent) {
             await this.sleep(1000);
-            return this.executeRequest<T>(url, method, body, skipAuth, 1, isRetryAfter401);
+            return this.executeRequest<T>(url, method, body, skipAuth, 1, isRetryAfter401, idempotent);
           }
           throw new NinjaOneServerError(
             `Server error: ${response.status} ${response.statusText}`,
