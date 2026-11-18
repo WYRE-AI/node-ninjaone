@@ -9,7 +9,7 @@ const BASE_URL = 'https://app.ninjarmm.com';
 
 export const handlers = [
   // OAuth token endpoint
-  http.post(`${BASE_URL}/oauth/token`, async ({ request }) => {
+  http.post(`${BASE_URL}/ws/oauth/token`, async ({ request }) => {
     const body = await request.text();
 
     // Check for bad credentials

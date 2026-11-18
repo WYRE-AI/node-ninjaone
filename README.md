@@ -25,7 +25,7 @@ import { NinjaOneClient } from '@asachs01/node-ninjaone';
 const client = new NinjaOneClient({
   clientId: process.env.NINJAONE_CLIENT_ID!,
   clientSecret: process.env.NINJAONE_CLIENT_SECRET!,
-  region: 'us', // 'us' | 'eu' | 'oc' | 'ca' | 'us2' | 'fed'
+  region: 'us', // 'us' | 'eu' | 'oc' | 'ca' | 'us2' | 'fed' | 'jp'
 });
 
 // List organizations
