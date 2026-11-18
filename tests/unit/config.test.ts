@@ -30,6 +30,27 @@ describe('resolveConfig', () => {
       expect(config.baseUrl).toBe(REGION_URLS.oc);
     });
 
+    it.each([
+      ['us', 'https://app.ninjarmm.com'],
+      ['eu', 'https://eu.ninjarmm.com'],
+      ['oc', 'https://oc.ninjarmm.com'],
+      ['ca', 'https://ca.ninjarmm.com'],
+      ['us2', 'https://us2.ninjarmm.com'],
+      ['fed', 'https://fed.ninjarmm.com'],
+      ['jp', 'https://jp.ninjarmm.com'],
+    ] as const)('should resolve region %s to %s', (region, url) => {
+      const config = resolveConfig({ ...baseConfig, region });
+
+      expect(config.baseUrl).toBe(url);
+      expect(REGION_URLS[region]).toBe(url);
+    });
+
+    it('should reject an unknown region', () => {
+      expect(() =>
+        resolveConfig({ ...baseConfig, region: 'uk' as never }),
+      ).toThrow(/Invalid region: uk.*us, eu, oc, ca, us2, fed, jp/);
+    });
+
     it('should use explicit baseUrl over region', () => {
       const customUrl = 'https://custom.ninjarmm.example.com';
       const config = resolveConfig({ ...baseConfig, baseUrl: customUrl, region: 'eu' });

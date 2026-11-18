@@ -118,7 +118,9 @@ export class AuthManager {
    * Perform the actual token acquisition using Client Credentials flow
    */
   private async doAcquireToken(): Promise<TokenInfo> {
-    const tokenUrl = `${this.config.baseUrl}/oauth/token`;
+    // Official token endpoint is {host}/ws/oauth/token (NinjaOne also
+    // accepts /oauth/token as an alias; use the documented path).
+    const tokenUrl = `${this.config.baseUrl}/ws/oauth/token`;
 
     // Build the request body for client credentials flow
     const bodyParams = new URLSearchParams({
